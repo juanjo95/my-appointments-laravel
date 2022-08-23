@@ -19,9 +19,9 @@
                                 @enderror
 
                                 @error('password')
-                                    <span class="alert alert-danger" role="alert">
+                                    <div class="alert alert-danger" role="alert">
                                         <strong>{{ $message }}</strong>
-                                    </span>
+                                    </div>
                                 @enderror
 
                                 <div class="form-group mb-3">
