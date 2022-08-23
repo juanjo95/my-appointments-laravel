@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
     <meta name="author" content="Creative Tim">
-    <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
+    <title>{{ config('app.name') }} | @yield('title')</title>
     <!-- Favicon -->
     <link href="{{ asset('img/brand/favicon.png') }}" rel="icon" type="image/png">
     <!-- Fonts -->
@@ -23,7 +23,7 @@
         <!-- Navbar -->
         <nav class="navbar navbar-top navbar-horizontal navbar-expand-md navbar-dark">
             <div class="container px-4">
-                <a class="navbar-brand" href="../index.html">
+                <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="{{ asset('img/brand/white.png') }}" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse-main" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,13 +65,17 @@
             </div>
         </nav>
         <!-- Header -->
-        <div class="header bg-gradient-primary py-7 py-lg-8">
+        <div class="header bg-gradient-primary py-6 py-lg-7">
             <div class="container">
                 <div class="header-body text-center mb-7">
                     <div class="row justify-content-center">
                         <div class="col-lg-5 col-md-6">
-                            <h1 class="text-white">Welcome!</h1>
-                            <p class="text-lead text-light">Use these awesome forms to login or create new account in your project for free.</p>
+                            <h1 class="text-white">
+                                @yield('title','Welcome!')
+                            </h1>
+                            <p class="text-lead text-light">
+                                @yield('subtitle')
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -91,22 +95,16 @@
             <div class="row align-items-center justify-content-xl-between">
                 <div class="col-xl-6">
                     <div class="copyright text-center text-xl-left text-muted">
-                        &copy; 2018 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
+                        &copy; 2022 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1">{{ config('app.name') }}</a>
                     </div>
                 </div>
                 <div class="col-xl-6">
                     <ul class="nav nav-footer justify-content-center justify-content-xl-end">
                         <li class="nav-item">
-                            <a href="https://www.creative-tim.com" class="nav-link" target="_blank">Creative Tim</a>
+                            <a href="/" class="nav-link" target="_blank">Template</a>
                         </li>
                         <li class="nav-item">
-                            <a href="https://www.creative-tim.com/presentation" class="nav-link" target="_blank">About Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="http://blog.creative-tim.com" class="nav-link" target="_blank">Blog</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md" class="nav-link" target="_blank">MIT License</a>
+                            <a href="#" class="nav-link" target="_blank">Acerca de</a>
                         </li>
                     </ul>
                 </div>

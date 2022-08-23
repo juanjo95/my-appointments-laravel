@@ -1,14 +1,14 @@
 @extends('layouts.form')
 
+@section('title','Inicio de sesión')
+@section('subtitle','Ingresa tus datos para iniciar sesión')
+
 @section('content')
     <div class="container mt--8 pb-5">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-7">
                     <div class="card bg-secondary shadow border-0">
                         <div class="card-body px-lg-5 py-lg-5">
-                            <div class="text-center text-muted mb-4">
-                                <small>Ingresa tus datos para iniciar sesión</small>
-                            </div>
                             <form method="POST" action="{{ route('login') }}" role="form">
                                 @csrf
 
