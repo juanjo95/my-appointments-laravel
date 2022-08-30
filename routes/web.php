@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SpecialtyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+//Specialty
+Route::get('/specialties', [SpecialtyController::class, 'index'])->name('specialty.index');
+Route::get('/specialties/create', [SpecialtyController::class, 'create'])->name('specialty.create');
+Route::get('/specialties/{specialty}/edit', [SpecialtyController::class, 'edit'])->name('specialty.edit');
+Route::post('/specialties', [SpecialtyController::class, 'store'])->name('specialty.store');
