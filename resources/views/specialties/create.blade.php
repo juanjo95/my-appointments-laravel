@@ -17,11 +17,21 @@
             @csrf
             <div class="form-group">
                 <label for="name">Nombre de la especialidad</label>
-                <input type="text" name="name" class="form-control">
+                <input type="text" name="name" class="form-control" value="{{old('name')}}" required>
+                @error('name')
+                    <div class="alert alert-danger" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </div>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="description">Descripción</label>
-                <input type="text" name="description" class="form-control">
+                <input type="text" name="description" class="form-control" value="{{old('name')}}" required>
+                @error('description')
+                    <div class="alert alert-danger" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </div>
+                @enderror
             </div>
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>

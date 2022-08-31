@@ -26,6 +26,17 @@ class SpecialtyController extends Controller
 
     public function store(Request $request)
     {
+        $rules = [
+            "name" => "required|min:3",
+            "description" => "required"
+        ];
+        $messages = [
+            "name.required" => "El nombre es obligatorio",
+            "name.min" => "El nombre debe tener al menos 3 caracteres",
+            "description.required" => "La descripcion es obligatoria",
+        ];
+        $this->validate($request,$rules,$messages);
+
         $specialty = new Specialty();
         $specialty->name = $request->name;
         $specialty->description = $request->description;
