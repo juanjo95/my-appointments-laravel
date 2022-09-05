@@ -24,7 +24,7 @@ class SpecialtyController extends Controller
         return view('specialties.create');
     }
 
-    public function store(Request $request)
+    private function performValidation($request)
     {
         $rules = [
             "name" => "required|min:3",
@@ -36,13 +36,19 @@ class SpecialtyController extends Controller
             "description.required" => "La descripcion es obligatoria",
         ];
         $this->validate($request,$rules,$messages);
+    }
+
+    public function store(Request $request)
+    {
+        $this->performValidation($request);
 
         $specialty = new Specialty();
         $specialty->name = $request->name;
         $specialty->description = $request->description;
         $specialty->save(); //INSERT
 
-        return Redirect::route("specialty.index");
+        $notification = "Especialidad creada correctamente";
+        return Redirect::route("specialty.index")->with(compact('notification'));
     }
 
     public function edit(Specialty $specialty)
@@ -50,29 +56,24 @@ class SpecialtyController extends Controller
         return view('specialties.edit', compact('specialty'));
     }
 
-    public function update(Request $request, Specialty $specialty){
-
-        $rules = [
-            "name" => "required|min:3",
-            "description" => "required"
-        ];
-        $messages = [
-            "name.required" => "El nombre es obligatorio",
-            "name.min" => "El nombre debe tener al menos 3 caracteres",
-            "description.required" => "La descripcion es obligatoria",
-        ];
-        $this->validate($request,$rules,$messages);
+    public function update(Request $request, Specialty $specialty)
+    {
+        $this->performValidation($request);
 
         $specialty->name = $request->name;
         $specialty->description = $request->description;
         $specialty->save(); //UPDATE
 
-        return Redirect::route("specialty.index");
+        $notification = "Especialidad actualizada correctamente";
+        return Redirect::route("specialty.index")->with(compact('notification'));
     }
 
     public function destroy(Specialty $specialty){
+        $specialty_name = $specialty->name;
         $specialty->delete();
-        return Redirect::route("specialty.index");
+
+        $notification = "Especialidad $specialty_name eliminada correctamente";
+        return Redirect::route("specialty.index")->with(compact('notification'));
     }
 
 }

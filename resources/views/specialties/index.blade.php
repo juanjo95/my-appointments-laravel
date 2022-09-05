@@ -12,6 +12,13 @@
             </div>
         </div>
     </div>
+    @if(session('notification'))
+        <div class="card-body">
+            <div class="alert alert-success" role="alert">
+                {{session('notification')}}
+            </div>
+        </div>
+    @endif
     <div class="table-responsive">
         <!-- Specialties -->
         <table class="table align-items-center table-flush">
