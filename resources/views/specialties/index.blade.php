@@ -28,8 +28,12 @@
                         <th scope="row">{{$specialty->name}}</th>
                         <td>{{$specialty->description}}</td>
                         <td>
-                            <a href="{{ route('specialty.edit', $specialty) }}" class="btn btn-sm btn-primary">Editar</a>
-                            <a href="" class="btn btn-sm btn-danger">Eliminar</a>
+                            <form action="{{ route('specialty.destroy', $specialty) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <a href="{{ route('specialty.edit', $specialty) }}" class="btn btn-sm btn-primary">Editar</a>
+                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

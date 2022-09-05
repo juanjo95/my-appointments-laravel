@@ -70,4 +70,9 @@ class SpecialtyController extends Controller
         return Redirect::route("specialty.index");
     }
 
+    public function destroy(Specialty $specialty){
+        $specialty->delete();
+        return Redirect::route("specialty.index");
+    }
+
 }
