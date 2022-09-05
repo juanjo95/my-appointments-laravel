@@ -28,4 +28,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/specialties', [SpecialtyController::class, 'index'])->name('specialty.index');
 Route::get('/specialties/create', [SpecialtyController::class, 'create'])->name('specialty.create');
 Route::get('/specialties/{specialty}/edit', [SpecialtyController::class, 'edit'])->name('specialty.edit');
+
 Route::post('/specialties', [SpecialtyController::class, 'store'])->name('specialty.store');
+Route::put('/specialties/{specialty}', [SpecialtyController::class, 'update'])->name('specialty.update');
+Route::delete('/specialties/{specialty}', [SpecialtyController::class, 'destroy'])->name('specialty.destroy');

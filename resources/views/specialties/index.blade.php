@@ -28,7 +28,7 @@
                         <th scope="row">{{$specialty->name}}</th>
                         <td>{{$specialty->description}}</td>
                         <td>
-                            <a href="" class="btn btn-sm btn-primary">Editar</a>
+                            <a href="{{ route('specialty.edit', $specialty) }}" class="btn btn-sm btn-primary">Editar</a>
                             <a href="" class="btn btn-sm btn-danger">Eliminar</a>
                         </td>
                     </tr>
