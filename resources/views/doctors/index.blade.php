@@ -5,10 +5,10 @@
     <div class="card-header border-0">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="mb-0">Especialidades</h3>
+                <h3 class="mb-0">Médicos</h3>
             </div>
             <div class="col text-right">
-                <a href="{{ route('specialty.create') }}" class="btn btn-sm btn-success">Nueva especialidad</a>
+                <a href="{{ route('doctors.create') }}" class="btn btn-sm btn-success">Nuevo médico</a>
             </div>
         </div>
     </div>
@@ -28,20 +28,22 @@
             <thead class="thead-light">
             <tr>
                 <th scope="col">Nombre</th>
-                <th scope="col">Descripción</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">DNI</th>
                 <th scope="col">Opciones</th>
             </tr>
             </thead>
             <tbody>
-                @foreach ($specialties as $specialty)
+                @foreach ($doctors as $doctor)
                     <tr>
-                        <th scope="row">{{$specialty->name}}</th>
-                        <td>{{$specialty->description}}</td>
+                        <th scope="row">{{$doctor->name}}</th>
+                        <td>{{$doctor->email}}</td>
+                        <td>{{$doctor->dni}}</td>
                         <td>
-                            <form action="{{ route('specialty.destroy', $specialty) }}" method="POST">
+                            <form action="{{ route('doctors.destroy', $doctor) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <a href="{{ route('specialty.edit', $specialty) }}" class="btn btn-sm btn-primary">Editar</a>
+                                <a href="{{ route('doctors.edit', $doctor) }}" class="btn btn-sm btn-primary">Editar</a>
                                 <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                             </form>
                         </td>
