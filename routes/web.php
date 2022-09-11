@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\SpecialtyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -38,3 +39,4 @@ Route::delete('/specialties/{specialty}', [SpecialtyController::class, 'destroy'
 Route::resource('doctors', DoctorController::class);
 
 //Patients
+Route::resource('patients', PatientController::class);

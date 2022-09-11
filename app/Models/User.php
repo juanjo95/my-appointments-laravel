@@ -41,4 +41,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /* Definir un scope, es tan sencillo como escribir el WHERE dentro del modelo */
+
+    public function scopePatients($query){
+        return $query->where('role','patient');
+    }
+
+    public function scopeDoctors($query){
+        return $query->where('role','doctor');
+    }
 }
