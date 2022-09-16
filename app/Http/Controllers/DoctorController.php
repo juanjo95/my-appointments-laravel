@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class DoctorController extends Controller
 {
@@ -36,7 +37,21 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'password' => 'required',
+            'dni' => 'nullable|digits:8',
+            'address' => 'nullable|min:5',
+            'phone' => 'nullable|min:6'
+        ];
+        $this->validate($request, $rules);
+
+        //mass assignment, significa asignacion masiva.
+        User::create($request->only('name','email','dni','address','phone') + ['role' => 'doctor', 'password' => bcrypt($request->password)]);
+
+        $notification = "Doctor creado correctamente";
+        return Redirect::route("doctors.index")->with(compact('notification'));
     }
 
     /**
@@ -58,7 +73,9 @@ class DoctorController extends Controller
      */
     public function edit($id)
     {
-        //
+        //Busca el medio que tenga este id, y si no lo encuentra devuelve error 404, y hacemos uso del scope doctors que ya habiamos creado en el modelo User
+        $doctor = User::doctors()->findOrFail($id);
+        return view('doctors.edit',compact('doctor'));
     }
 
     /**
@@ -70,7 +87,29 @@ class DoctorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'dni' => 'nullable|digits:8',
+            'address' => 'nullable|min:5',
+            'phone' => 'nullable|min:6'
+        ];
+        $this->validate($request, $rules);
+
+        $user = User::doctors()->findOrFail($id);
+        $data = $request->only('name','email','dni','address','phone');
+        $password = $request->password;
+
+        if($password){
+            $data['password'] = bcrypt($request->password);
+        }
+
+        $user->fill($data);
+
+        $user->save();//UPDATE
+
+        $notification = "Doctor actualizado correctamente";
+        return Redirect::route("doctors.index")->with(compact('notification'));
     }
 
     /**
@@ -79,8 +118,12 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $doctor)
     {
-        //
+        $nameDoc = $doctor->name;
+        $doctor->delete();
+
+        $notification = "El doctor $nameDoc ha sido eliminado correctamente";
+        return Redirect::route("doctors.index")->with(compact('notification'));
     }
 }
