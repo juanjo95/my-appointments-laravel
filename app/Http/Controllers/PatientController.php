@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class PatientController extends Controller
 {
@@ -14,7 +15,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $patients = User::patients()->get();
+        $patients = User::patients()->paginate(5);
         return view('patients.index',compact('patients'));
     }
 
@@ -36,7 +37,21 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'password' => 'required',
+            'dni' => 'nullable|digits:8',
+            'address' => 'nullable|min:5',
+            'phone' => 'nullable|min:6'
+        ];
+        $this->validate($request, $rules);
+
+        //mass assignment, significa asignacion masiva.
+        User::create($request->only('name','email','dni','address','phone') + ['role' => 'patient', 'password' => bcrypt($request->password)]);
+
+        $notification = "Paciente creado correctamente";
+        return Redirect::route("patients.index")->with(compact('notification'));
     }
 
     /**
@@ -56,9 +71,9 @@ class PatientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $patient)
     {
-        //
+        return view('patients.edit',compact('patient'));
     }
 
     /**
@@ -70,7 +85,29 @@ class PatientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'dni' => 'nullable|digits:8',
+            'address' => 'nullable|min:5',
+            'phone' => 'nullable|min:6'
+        ];
+        $this->validate($request, $rules);
+
+        $user = User::patients()->findOrFail($id);
+        $data = $request->only('name','email','dni','address','phone');
+        $password = $request->password;
+
+        if($password){
+            $data['password'] = bcrypt($request->password);
+        }
+
+        $user->fill($data);
+
+        $user->save();//UPDATE
+
+        $notification = "Paciente actualizado correctamente";
+        return Redirect::route("patients.index")->with(compact('notification'));
     }
 
     /**
@@ -79,8 +116,12 @@ class PatientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $patient)
     {
-        //
+        $namePat = $patient->name;
+        $patient->delete();
+
+        $notification = "El paciente $namePat ha sido eliminado correctamente";
+        return Redirect::route("patients.index")->with(compact('notification'));
     }
 }
