@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PatientController;
-use App\Http\Controllers\SpecialtyController;
+use App\Http\Controllers\Admin\PatientController;
+use App\Http\Controllers\Admin\SpecialtyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,23 +20,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('/');
 
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-//Specialty
-Route::get('/specialties', [SpecialtyController::class, 'index'])->name('specialty.index');
-Route::get('/specialties/create', [SpecialtyController::class, 'create'])->name('specialty.create');
-Route::get('/specialties/{specialty}/edit', [SpecialtyController::class, 'edit'])->name('specialty.edit');
+Route::middleware(['auth','admin'])->group(function (){
+    //Specialty
+    Route::get('/specialties', [SpecialtyController::class, 'index'])->name('specialty.index');
+    Route::get('/specialties/create', [SpecialtyController::class, 'create'])->name('specialty.create');
+    Route::get('/specialties/{specialty}/edit', [SpecialtyController::class, 'edit'])->name('specialty.edit');
 
-Route::post('/specialties', [SpecialtyController::class, 'store'])->name('specialty.store');
-Route::put('/specialties/{specialty}', [SpecialtyController::class, 'update'])->name('specialty.update');
-Route::delete('/specialties/{specialty}', [SpecialtyController::class, 'destroy'])->name('specialty.destroy');
+    Route::post('/specialties', [SpecialtyController::class, 'store'])->name('specialty.store');
+    Route::put('/specialties/{specialty}', [SpecialtyController::class, 'update'])->name('specialty.update');
+    Route::delete('/specialties/{specialty}', [SpecialtyController::class, 'destroy'])->name('specialty.destroy');
 
-//Doctors
-Route::resource('doctors', DoctorController::class);
+    //Doctors
+    Route::resource('doctors', DoctorController::class);
 
-//Patients
-Route::resource('patients', PatientController::class);
+    //Patients
+    Route::resource('patients', PatientController::class);
+});
+
