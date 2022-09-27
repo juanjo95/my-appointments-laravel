@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\SpecialtyController;
+use App\Http\Controllers\Doctor\ScheduleController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -41,5 +42,9 @@ Route::middleware(['auth','admin'])->group(function (){
 
     //Patients
     Route::resource('patients', PatientController::class);
+});
+
+Route::middleware(['auth','doctor'])->group(function (){
+    Route::get('/schedule', [ScheduleController::class, 'edit'])->name('schedule.edit');
 });
 
