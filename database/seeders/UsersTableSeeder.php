@@ -22,11 +22,27 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => bcrypt('12345678'),
             'remember_token' => Str::random(10),
-            'dni' => '1053847013',
-            'address' => '',
-            'phone' => '3104439489',
             'role' => 'admin'
         ]);
+
+        User::create([
+            'name' => 'Paciente 1',
+            'email' => 'patient1@hotmail.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('12345678'),
+            'remember_token' => Str::random(10),
+            'role' => 'patient'
+        ]);
+
+        User::create([
+            'name' => 'Medico 1',
+            'email' => 'doctor1@hotmail.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('12345678'),
+            'remember_token' => Str::random(10),
+            'role' => 'doctor'
+        ]);
+
         User::factory(50)->create();
     }
 }

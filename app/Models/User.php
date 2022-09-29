@@ -55,4 +55,9 @@ class User extends Authenticatable
     public function scopeDoctors($query){
         return $query->where('role','doctor');
     }
+
+    /* Un medio se asocia con multiples especialidades, $user->specialties acceder a las especialidades de ese medico */
+    public function specialties(){
+        return $this->belongsToMany(Speciality::class);
+    }
 }
