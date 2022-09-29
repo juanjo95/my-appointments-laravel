@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Controller;
+use App\Models\Specialty;
 
 class DoctorController extends Controller
 {
@@ -27,7 +28,8 @@ class DoctorController extends Controller
      */
     public function create()
     {
-        return view('doctors.create');
+        $specialties = Specialty::all();
+        return view('doctors.create', compact('specialties'));
     }
 
     /**
@@ -37,7 +39,7 @@ class DoctorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   dd($request->all());
         $rules = [
             'name' => 'required|min:3',
             'email' => 'required|email',
