@@ -1,5 +1,9 @@
 @extends('layouts.panel')
 
+@section('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+@endsection
+
 @section('content')
 <div class="card shadow">
     <div class="card-header border-0">
@@ -71,8 +75,25 @@
                     </div>
                 @enderror
             </div>
+            <div class="form-group">
+                <label for="specialties">Especialidades</label>
+                <select name="specialties[]" id="specialties" class="form-control selectpicker" data-style="btn-default" multiple title="Selecciona las especialidades">
+                    @foreach ($specialties as $specialty)
+                        <option value="{{$specialty->id}}">{{$specialty->name}}</option>
+                    @endforeach
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script>
+        $(document).ready( () => {
+            $("#specialties").selectpicker('val', @json($specialties_ids));
+        });
+    </script>
 @endsection

@@ -17,13 +17,9 @@ return new class extends Migration
             $table->id();
 
             //Doctor
-            //$table->unsignedInteger('user_id');
-            //$table->foreign('user_id')->references('id')->on('users');
-
-            //Speciality
-            //$table->unsignedInteger('specialty_id');
-            //$table->foreign('specialty_id')->references('id')->on('specialties');
             $table->foreignId('user_id')->constrained();
+
+            //Specialty
             $table->foreignId('specialty_id')->constrained();
             $table->timestamps();
         });

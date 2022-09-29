@@ -58,6 +58,6 @@ class User extends Authenticatable
 
     /* Un medio se asocia con multiples especialidades, $user->specialties acceder a las especialidades de ese medico */
     public function specialties(){
-        return $this->belongsToMany(Speciality::class);
+        return $this->belongsToMany(Specialty::class)->withTimestamps();
     }
 }

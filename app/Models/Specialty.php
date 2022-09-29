@@ -11,6 +11,6 @@ class Specialty extends Model
 
     /* Una especialidad se asocia con multiples medicos, $specialty->users acceder a la lista de medicos que estan asociados a esta especialidad */
     public function users(){
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }
