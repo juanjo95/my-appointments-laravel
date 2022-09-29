@@ -46,5 +46,6 @@ Route::middleware(['auth','admin'])->group(function (){
 
 Route::middleware(['auth','doctor'])->group(function (){
     Route::get('/schedule', [ScheduleController::class, 'edit'])->name('schedule.edit');
+    Route::post('/schedule', [ScheduleController::class, 'store'])->name('schedule.store');
 });
 
