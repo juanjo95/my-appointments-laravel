@@ -44,12 +44,12 @@
         </li>
     @else {{-- Patient --}}
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('specialty.index') }}">
+            <a class="nav-link" href="{{ route('appointment.create') }}">
             <i class="ni ni-send text-danger"></i>Reservar cita
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('specialty.index') }}">
+            <a class="nav-link" href="{{ route('appointment.store') }}">
             <i class="ni ni-satisfied text-info"></i> Mis citas
             </a>
         </li>
