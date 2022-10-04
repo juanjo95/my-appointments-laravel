@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\SpecialtyController;
 use App\Http\Controllers\Api\SpecialtyController as ApiSpecialtyController;
+use App\Http\Controllers\Api\ScheduleController as ApiScheduleController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Doctor\ScheduleController;
 use Illuminate\Support\Facades\Auth;
@@ -57,5 +58,6 @@ Route::middleware('auth')->group(function (){
 
     //JSON
     Route::get('/specialties/{specialty}/doctors', [ApiSpecialtyController::class, 'doctors'])->name('specialties.doctors');
+    Route::get('/schedule/hours', [ApiScheduleController::class, 'hours'])->name('schedule.hours');
 });
 
