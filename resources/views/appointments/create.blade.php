@@ -46,7 +46,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                     </div>
-                    <input class="form-control datepicker" placeholder="Seleccinar fecha" type="text" value="{{date('Y-m-d')}}" data-date-format="yyyy-mm-dd" data-date-start-date="{{date('Y-m-d')}}" data-date-end-date="+30d">
+                    <input id="date" class="form-control datepicker" placeholder="Seleccinar fecha" type="text" value="{{date('Y-m-d')}}" data-date-format="yyyy-mm-dd" data-date-start-date="{{date('Y-m-d')}}" data-date-end-date="+30d">
                 </div>
                 @error('dni')
                     <div class="alert alert-danger" role="alert">
@@ -56,7 +56,9 @@
             </div>
             <div class="form-group">
                 <label for="address">Hora atención</label>
-                <input type="text" name="address" class="form-control" value="{{old('address')}}" required>
+                <div id="hours">
+
+                </div>
                 @error('address')
                     <div class="alert alert-danger" role="alert">
                         <strong>{{ $message }}</strong>
@@ -89,19 +91,5 @@
 
 @section('scripts')
     <script src="{{ asset('/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-    <script>
-        $(function() {
-            $("#specialty").change( () => {
-                let specialty_id = $("#specialty").val();
-                const URL = `/specialties/${specialty_id}/doctors`;
-                $.getJSON(URL, doctors => {
-                    let htmlOptions = "";
-                    doctors.forEach(doctor => {
-                        htmlOptions += `<option value="${doctor.id}">${doctor.name}</option>`;
-                    });
-                    $("#doctor").html(htmlOptions);
-                });
-            });
-        });
-    </script>
+    <script src="{{ asset('js/appointments/create.js') }}"></script>
 @endsection

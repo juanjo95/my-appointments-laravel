@@ -29,6 +29,10 @@ class ScheduleController extends Controller
         $doctorId = $request->doctor_id;
         $workDay = WorkDay::where('active',true)->where('day',$day)->where('user_id',$doctorId)->first(['morning_start','morning_end','afternoon_start','afternoon_end']);
 
+        if(!$workDay){
+            return [];
+        }
+
         $morningIntervals = $this->getIntervals($workDay->morning_start,$workDay->morning_end);
         $afternoonIntervals = $this->getIntervals($workDay->afternoon_start,$workDay->afternoon_end);
 
