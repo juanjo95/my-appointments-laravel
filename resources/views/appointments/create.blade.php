@@ -13,32 +13,45 @@
         </div>
     </div>
     <div class="card-body">
-        <form action="{{ route('patients.store') }}" method="POST">
+        <form action="{{ route('appointment.store') }}" method="POST">
             @csrf
             <div class="form-group">
-                <label for="specialty">Especialidad</label>
-                <select name="specialty_id" id="specialty" class="form-control">
-                    <option value="-1" selected disabled>Seleccionar especialidad</option>
-                    @foreach ($specialties as $specialty)
-                        <option value="{{$specialty->id}}">{{$specialty->name}}</option>
-                    @endforeach
-                </select>
-                @error('name')
-                    <div class="alert alert-danger" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </div>
+                <label for="description">Descripción</label>
+                <input type="text" name="description" id="description" value="{{ old('description') }}" class="form-control" placeholder="Describe brevemente la consulta" required>
+                @error('description')
+                        <div class="alert alert-danger" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </div>
                 @enderror
             </div>
-            <div class="form-group">
-                <label for="email">Médico</label>
-                <select name="doctor_id" id="doctor" class="form-control">
-
-                </select>
-                @error('email')
-                    <div class="alert alert-danger" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </div>
-                @enderror
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="specialty">Especialidad</label>
+                    <select name="specialty_id" id="specialty" class="form-control" required>
+                        <option value="-1" selected disabled>Seleccionar especialidad</option>
+                        @foreach ($specialties as $specialty)
+                            <option value="{{$specialty->id}}" @if(old('specialty_id') == $specialty->id) selected @endif>{{$specialty->name}}</option>
+                        @endforeach
+                    </select>
+                    @error('specialty_id')
+                        <div class="alert alert-danger" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="email">Médico</label>
+                    <select name="doctor_id" id="doctor" class="form-control" required>
+                        @foreach ($doctors as $doctor)
+                            <option value="{{$doctor->id}} @if(old('doctor_id') == $doctor->id) selected @endif">{{$doctor->name}}</option>
+                        @endforeach
+                    </select>
+                    @error('doctor_id')
+                        <div class="alert alert-danger" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </div>
+                    @enderror
+                </div>
             </div>
             <div class="form-group">
                 <label for="dni">Fecha</label>
@@ -46,9 +59,9 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                     </div>
-                    <input id="date" class="form-control datepicker" placeholder="Seleccinar fecha" type="text" value="{{date('Y-m-d')}}" data-date-format="yyyy-mm-dd" data-date-start-date="{{date('Y-m-d')}}" data-date-end-date="+30d">
+                    <input id="date" name="scheduled_date" class="form-control datepicker" placeholder="Seleccinar fecha" type="text" value="{{old('scheduled_date',date('Y-m-d'))}}" data-date-format="yyyy-mm-dd" data-date-start-date="{{date('Y-m-d')}}" data-date-end-date="+30d">
                 </div>
-                @error('dni')
+                @error('scheduled_date')
                     <div class="alert alert-danger" role="alert">
                         <strong>{{ $message }}</strong>
                     </div>
@@ -57,27 +70,29 @@
             <div class="form-group">
                 <label for="address">Hora atención</label>
                 <div id="hours">
-
+                    <div class="alert alert-info" role="alert">Selecciona un médico y una fecha, para ver su horario disponible de atención</div>
                 </div>
-                @error('address')
+                @error('scheduled_time')
                     <div class="alert alert-danger" role="alert">
                         <strong>{{ $message }}</strong>
                     </div>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="phone">Teléfono</label>
-                <input type="number" name="phone" class="form-control" value="{{old('phone')}}" required>
-                @error('phone')
-                    <div class="alert alert-danger" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </div>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="text" name="password" class="form-control" value="{{Str::random(12)}}" required>
-                @error('password')
+                <label for="type">Tipo de consulta</label>
+                <div class="custom-control custom-radio mb-3">
+                    <input type="radio" id="type1" name="type" class="custom-control-input" @if(old('type','Consulta') == 'Consulta') checked @endif value="Consulta">
+                    <label class="custom-control-label" for="type1">Consulta</label>
+                </div>
+                <div class="custom-control custom-radio mb-3">
+                    <input type="radio" id="type2" name="type" class="custom-control-input" @if(old('type') == 'Examen') checked @endif value="Examen">
+                    <label class="custom-control-label" for="type2">Examen</label>
+                </div>
+                <div class="custom-control custom-radio mb-3">
+                    <input type="radio" id="type3" name="type" class="custom-control-input" @if(old('type') == 'Operación') checked @endif value="Operación">
+                    <label class="custom-control-label" for="type3">Operación</label>
+                </div>
+                @error('type')
                     <div class="alert alert-danger" role="alert">
                         <strong>{{ $message }}</strong>
                     </div>
