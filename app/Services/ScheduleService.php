@@ -3,6 +3,7 @@
     namespace App\Services;
 
     use App\Interfaces\ScheduleServiceInterface;
+    use App\Models\Appointment;
     use App\Models\WorkDay;
     use Carbon\Carbon;
 
@@ -27,8 +28,8 @@
                 return [];
             }
 
-            $morningIntervals = $this->getIntervals($workDay->morning_start,$workDay->morning_end);
-            $afternoonIntervals = $this->getIntervals($workDay->afternoon_start,$workDay->afternoon_end);
+            $morningIntervals = $this->getIntervals($workDay->morning_start,$workDay->morning_end,$date,$doctorId);
+            $afternoonIntervals = $this->getIntervals($workDay->afternoon_start,$workDay->afternoon_end,$date,$doctorId);
 
             $data = [];
             $data['morning'] = $morningIntervals;
@@ -37,7 +38,7 @@
             return $data;
         }
 
-        private function getIntervals($start, $end){
+        private function getIntervals($start, $end, $date, $doctorId){
             $start = new Carbon($start);
             $end = new Carbon($end);
 
@@ -46,10 +47,14 @@
                 $interval = [];
 
                 $interval ['start'] = $start->format('g:i A');
+                $exists = Appointment::where('doctor_id', $doctorId)->where('scheduled_date', $date)->where('scheduled_time', $start->format('H:i:s'))->exists();
                 $start->addMinutes(30);
                 $interval ['end'] = $start->format('g:i A');
 
-                $intervals [] = $interval;
+                if(!$exists){
+                    $intervals [] = $interval;
+                }
+
             }
 
             return $intervals;
