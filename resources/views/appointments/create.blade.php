@@ -70,7 +70,22 @@
             <div class="form-group">
                 <label for="address">Hora atención</label>
                 <div id="hours">
-                    <div class="alert alert-info" role="alert">Selecciona un médico y una fecha, para ver su horario disponible de atención</div>
+                    @if ($intervals)
+                        @foreach ($intervals["morning"] as $key => $interval)
+                            <div class="custom-control custom-radio mb-3">
+                                <input type="radio" id="intervalMorning{{$key}}" name="scheduled_time" class="custom-control-input" value="{{$interval['start']}}" required>
+                                <label class="custom-control-label" for="intervalMorning{{$key}}">{{$interval['start']}} - {{$interval['end']}}</label>
+                            </div>
+                        @endforeach
+                        @foreach ($intervals["afternoon"] as $key => $interval)
+                            <div class="custom-control custom-radio mb-3">
+                                <input type="radio" id="intervalAfternoon{{$key}}" name="scheduled_time" class="custom-control-input" value="{{$interval['start']}}" required>
+                                <label class="custom-control-label" for="intervalAfternoon{{$key}}">{{$interval['start']}} - {{$interval['end']}}</label>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="alert alert-info" role="alert">Selecciona un médico y una fecha, para ver su horario disponible de atención</div>
+                    @endif
                 </div>
                 @error('scheduled_time')
                     <div class="alert alert-danger" role="alert">
