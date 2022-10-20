@@ -9,55 +9,37 @@
             </div>
         </div>
     </div>
-    @if(session('notification'))
-        <div class="card-body">
+    <div class="card-body">
+        @if(session('notification'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{session('notification')}}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        </div>
-    @endif
-    <div class="table-responsive">
-        <!-- Specialties -->
-        <table class="table align-items-center table-flush">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col">Descripción</th>
-                <th scope="col">Especialidad</th>
-                <th scope="col">Médico</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Hora</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Opciones</th>
-            </tr>
-            </thead>
-            <tbody>
-                @foreach ($appointments as $appointment)
-                    <tr>
-                        <th scope="row">{{$appointment->description}}</th>
-                        <td>{{$appointment->specialty->name}}</td>
-                        <td>{{$appointment->doctor->name}}</td>
-                        <td>{{$appointment->scheduled_date}}</td>
-                        <td>{{$appointment->scheduled_time_12}}</td>
-                        <td>{{$appointment->type}}</td>
-                        <td>{{$appointment->status}}</td>
-                        <td>
-                            <form action="{{-- {{ route('appointments.destroy', $appointment) }} --}}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" title="Cancelar cita">Cancelar</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        @endif
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#confirmed-appointments" role="tab" aria-selected="true">Mis próximas citas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#pending-appointments" role="tab" aria-selected="false">Citas por confirmar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#old-appointments" role="tab" aria-selected="false">Historial de citas</a>
+            </li>
+        </ul>
     </div>
-    <div class="card-body">
-        {{ $appointments->links() }}
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="confirmed-appointments" role="tabpanel">
+            @include('appointments.confirmed-appointments')
+        </div>
+        <div class="tab-pane fade" id="pending-appointments" role="tabpanel">
+            @include('appointments.pending-appointments')
+        </div>
+        <div class="tab-pane fade" id="old-appointments" role="tabpanel">
+            @include('appointments.old-appointments')
+        </div>
     </div>
 </div>
 @endsection
