@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use App\Models\Specialty;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AppointmentController extends Controller
 {
@@ -32,7 +33,7 @@ class AppointmentController extends Controller
         return view('appointments.create',compact('specialties','doctors','intervals'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request, ScheduleServiceInterface $scheduleService){
         $rules = [
             'description' => 'required',
             'specialty_id' => 'exists:specialties,id',
@@ -43,7 +44,29 @@ class AppointmentController extends Controller
         $messages = [
             'scheduled_time.required' => 'Seleccione una hora valida para su cita'
         ];
-        $this->validate($request,$rules,$messages);
+
+        $validator = Validator::make($request->all(),$rules,$messages);
+        $validator->after(function($validator) use($request,$scheduleService){
+            $date = $request->scheduled_date;
+            $doctorId = $request->doctor_id;
+            $scheduled_time = $request->scheduled_time;
+
+            if($date && $doctorId && $scheduled_time){
+                $start = new Carbon($scheduled_time);
+            }else{
+                return;
+            }
+
+            if(!$scheduleService->isAvailableInterval($date, $doctorId, $start)){
+                $validator->errors()->add('available_time','La hora seleccionada ya se encuentra seleccionada por otro paciente');
+            }
+        });
+
+        if($validator->fails()){
+            $notification_error = "La hora seleccionada ya se encuentra seleccionada por otro paciente.";
+            return back()->with(compact('notification_error'))->withInput();
+            //return back()->withErrors($validator)->withInput();
+        }
 
         $data = $request->only([
             'description',

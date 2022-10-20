@@ -21,6 +21,11 @@
             return $day;
         }
 
+        public function isAvailableInterval($date, $doctorId, Carbon $start){
+            $exists = Appointment::where('doctor_id', $doctorId)->where('scheduled_date', $date)->where('scheduled_time', $start->format('H:i:s'))->exists();
+            return !$exists;
+        }
+
         public function getAvailableIntervals($date, $doctorId){
             $workDay = WorkDay::where('active',true)->where('day',$this->getDayFromDate($date))->where('user_id',$doctorId)->first(['morning_start','morning_end','afternoon_start','afternoon_end']);
 
@@ -47,11 +52,11 @@
                 $interval = [];
 
                 $interval ['start'] = $start->format('g:i A');
-                $exists = Appointment::where('doctor_id', $doctorId)->where('scheduled_date', $date)->where('scheduled_time', $start->format('H:i:s'))->exists();
+                $available = $this->isAvailableInterval($date,$doctorId,$start);
                 $start->addMinutes(30);
                 $interval ['end'] = $start->format('g:i A');
 
-                if(!$exists){
+                if($available){
                     $intervals [] = $interval;
                 }
 
