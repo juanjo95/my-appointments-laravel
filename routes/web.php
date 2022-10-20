@@ -53,6 +53,7 @@ Route::middleware(['auth','doctor'])->group(function (){
 });
 
 Route::middleware('auth')->group(function (){
+    Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointment.index');
     Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointment.create');
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointment.store');
 
